@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: worker
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      group-id: user-group
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: "com.hanyahunya.kafkaDto"
+        spring.json.use.type.headers: true
+  mail:
+    host: ${TASKE_SMTP_HOST}
+    port: ${TASKE_SMTP_PORT}
+    username: ${TASKE_SMTP_USER}
+    password: ${TASKE_SMTP_PW}
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+      ssl.trust: ${TASKE_SMTP_HOST}
