@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{email.compromise.title}">Taske Security Alert</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .email-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+        .header-alert {
+            background-color: #E74C3C;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .content {
+            padding: 30px 20px;
+            color: #333333;
+            line-height: 1.6;
+        }
+        .info-box {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .info-box-alert {
+            border-left: 4px solid #E74C3C;
+        }
+        .info-box p {
+            margin: 0;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid #eeeeee;
+            margin: 30px 0;
+        }
+        .info-text {
+            font-size: 0.9em;
+            color: #777777;
+        }
+        .footer {
+            background-color: #f4f4f4;
+            color: #777777;
+            padding: 15px;
+            text-align: center;
+            font-size: 0.8em;
+        }
+        .footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="email-container">
+
+    <div class="header header-alert">
+        <h1 th:text="#{email.compromise.greeting}">Important Security Alert</h1>
+    </div>
+
+    <div class="content">
+        <p th:text="#{email.compromise.message1}">
+            We have detected suspicious activity on your Taske account.
+        </p>
+        <p th:text="#{email.compromise.message2}">
+            For your protection, we have signed you out of all devices.
+        </p>
+
+        <div class="info-box info-box-alert">
+            <p>
+                <strong th:text="#{email.compromise.time_label}">Time of detection:</strong>
+                <span th:text="${compromise_time}">2025-10-01 23:30:00</span>
+            </p>
+        </div>
+
+        <hr>
+
+        <p class="info-text" th:text="#{email.compromise.warning}">
+            Your registered tasks are running normally. To continue using the service, please log in again to re-authenticate.
+        </p>
+    </div>
+
+    <div class="footer">
+        <p th:text="#{email.compromise.footer}">
+            © 2025 Taske. All rights reserved.
+        </p>
+    </div>
+
+</div>
+
+</body>
+</html>

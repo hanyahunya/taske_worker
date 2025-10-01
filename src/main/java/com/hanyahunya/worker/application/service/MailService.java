@@ -24,7 +24,6 @@ public class MailService implements MailUseCase {
     public void sendSystemMail(SendMailCommand command) {
         Locale userLocale = Locale.getDefault();
 
-        // 2. 입력된 로케일이 지원 목록에 있는지 확인
         if (command.locale() != null && SUPPORTED_LOCALES.contains(command.locale())) {
             userLocale = Locale.forLanguageTag(command.locale());
         }

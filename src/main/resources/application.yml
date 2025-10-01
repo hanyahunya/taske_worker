@@ -13,12 +13,27 @@ spring:
         spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
         spring.json.trusted.packages: "com.hanyahunya.kafkaDto"
         spring.json.use.type.headers: true
+#  mail:
+#    host: ${TASKE_SMTP_HOST}
+#    port: ${TASKE_SMTP_PORT}
+#    username: ${TASKE_SMTP_USER}
+#    password: ${TASKE_SMTP_PW}
+#    properties.mail.smtp:
+#      auth: true
+#      starttls.enable: true
+#      ssl.trust: ${TASKE_SMTP_HOST}
+
+  # naver setting (temp)
   mail:
-    host: ${TASKE_SMTP_HOST}
-    port: ${TASKE_SMTP_PORT}
-    username: ${TASKE_SMTP_USER}
-    password: ${TASKE_SMTP_PW}
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${SMTP_USER}
+    password: ${SMTP_PASSWORD}
+    protocol: smtps
     properties.mail.smtp:
-      auth: true
-      starttls.enable: true
-      ssl.trust: ${TASKE_SMTP_HOST}
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            enable: true
+            trust: ${SMTP_HOST}
