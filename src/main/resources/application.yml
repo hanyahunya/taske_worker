@@ -24,6 +24,12 @@ spring:
 #      ssl.trust: ${TASKE_SMTP_HOST}
 
   # naver setting (temp)
+  grpc:
+    client:
+      channels:
+        task-service:
+          address: static://localhost:9095
+          negotiation-type: plaintext
   mail:
     host: ${SMTP_HOST}
     port: ${SMTP_PORT}
@@ -37,3 +43,9 @@ spring:
           ssl:
             enable: true
             trust: ${SMTP_HOST}
+
+logging:
+  level:
+    com.hanyahunya.worker: INFO
+
+    org.springframework: INFO
