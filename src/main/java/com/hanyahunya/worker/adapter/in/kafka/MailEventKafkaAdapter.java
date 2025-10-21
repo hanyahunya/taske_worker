@@ -1,7 +1,7 @@
-package com.hanyahunya.worker.adapter.in;
+package com.hanyahunya.worker.adapter.in.kafka;
 
 import com.hanyahunya.kafkaDto.SendSystemMailEvent;
-import com.hanyahunya.worker.application.command.SendMailCommand;
+import com.hanyahunya.worker.application.command.SendSystemMailCommand;
 import com.hanyahunya.worker.application.port.in.MailUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -14,7 +14,7 @@ public class MailEventKafkaAdapter {
 
     @KafkaListener(topics = "system-mail-events", groupId = "worker-group")
     public void sendSystemMail(SendSystemMailEvent event){
-        SendMailCommand command = SendMailCommand.builder()
+        SendSystemMailCommand command = SendSystemMailCommand.builder()
                 .to(event.getTo())
                 .subject(event.getSubject())
                 .templateName(event.getTemplateName())

@@ -12,6 +12,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -24,22 +25,33 @@ public class MailSenderAdapter implements MailSenderPort {
     private String from;
 
     @Override
-    public void send(String to, String subject, String body) {
+    public void send(List<String> to, String subject, String body) {
+
+        if (to == null || to.isEmpty()) {
+            log.warn("Recipient list is empty. Skipping email send for subject: {}", subject);
+            return;
+        }
+
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-            helper.setTo(to);
-//            helper.setFrom(String.valueOf(new InternetAddress("noreply@hanyahunya.com", "Taske")));
+            // to do 추후 smtp 서버를 운용하면 각 다른 요청으로 보낼수있게 변경
+            helper.setTo(from);
+
+            helper.setBcc(to.toArray(new String[0]));
+
             helper.setFrom(String.valueOf(new InternetAddress(from, "Taske")));
             helper.setSubject(subject);
             helper.setText(body, true);
+
             javaMailSender.send(mimeMessage);
-            // todo 여기부터 밑에 수정 필요
-            log.info("Successfully sent email via SMTP to {}", to);
+
+            log.info("Successfully sent email via Bcc to {} recipients. Subject: {}", to.size(), subject);
         } catch (MessagingException e) {
-            log.error("Failed to send email via SMTP to {}", to, e);
+            log.error("Failed to send email via Bcc to {} recipients. Subject: {}", to.size(), subject, e);
             throw new RuntimeException(e);
         } catch (UnsupportedEncodingException e) {
+            log.error("Failed to encode sender name", e);
             throw new RuntimeException(e);
         }
     }
