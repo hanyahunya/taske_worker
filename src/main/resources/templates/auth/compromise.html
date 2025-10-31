@@ -2,68 +2,96 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{email.compromise.title}">Taske Security Alert</title>
+    <title th:text="#{email.compromise.title}">Taske 보안 경고</title>
     <style>
+        /* minimal-white-style.css 기반 스타일 */
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #000;
+            background: #fff;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
         }
         .email-container {
             width: 100%;
-            max-width: 600px;
-            margin: 20px auto;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            overflow: hidden;
+            max-width: 500px; /* .auth-form과 유사한 너비 */
+            margin: 40px auto;
+            border: 2px solid #000; /* auth-form 테두리 */
+            overflow: hidden; /* 헤더 배경색을 위해 */
+            box-sizing: border-box;
         }
+
+        /* 경고 헤더 (검은색 배경) */
         .header {
-            color: #ffffff;
-            padding: 20px;
+            background-color: #000;
+            color: #fff;
+            padding: 30px;
             text-align: center;
         }
-        .header-alert {
-            background-color: #E74C3C;
-        }
         .header h1 {
+            font-size: 32px;
+            font-weight: 100; /* H1 폰트 스타일 적용 */
+            letter-spacing: -1px;
             margin: 0;
         }
+
         .content {
-            padding: 30px 20px;
-            color: #333333;
+            padding: 40px;
+            color: #000;
             line-height: 1.6;
         }
-        .info-box {
-            background-color: #f9f9f9;
-            padding: 15px;
-            margin: 20px 0;
+        .content p {
+            font-size: 16px;
+            font-weight: 300;
+            margin-bottom: 25px;
         }
-        .info-box-alert {
-            border-left: 4px solid #E74C3C;
+
+        /* 정보 박스 (.stat-item 스타일 변형) */
+        .info-box {
+            background: #fff;
+            padding: 20px;
+            margin: 30px 0;
+            border: 1px solid #000;
+            text-align: center;
         }
         .info-box p {
             margin: 0;
+            font-size: 14px;
+            font-weight: 300;
         }
+        .info-box strong {
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 12px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* .black-line 스타일 적용 */
         hr {
+            width: 100%;
+            height: 1px;
+            background: #000;
             border: 0;
-            border-top: 1px solid #eeeeee;
             margin: 30px 0;
         }
+
         .info-text {
-            font-size: 0.9em;
-            color: #777777;
+            font-size: 14px;
+            color: #333;
+            font-weight: 300;
         }
+
         .footer {
-            background-color: #f4f4f4;
-            color: #777777;
-            padding: 15px;
-            text-align: center;
-            font-size: 0.8em;
-        }
-        .footer p {
             margin: 0;
+            padding: 20px 40px 30px;
+            text-align: center;
+            font-size: 12px;
+            letter-spacing: 1px;
+            font-weight: 500;
+            text-transform: uppercase;
         }
     </style>
 </head>
@@ -72,20 +100,20 @@
 <div class="email-container">
 
     <div class="header header-alert">
-        <h1 th:text="#{email.compromise.greeting}">Important Security Alert</h1>
+        <h1 th:text="#{email.compromise.greeting}">중요 보안 경고</h1>
     </div>
 
     <div class="content">
         <p th:text="#{email.compromise.message1}">
-            We have detected suspicious activity on your Taske account.
+            Taske 계정에서 의심스러운 활동이 감지되었습니다.
         </p>
         <p th:text="#{email.compromise.message2}">
-            For your protection, we have signed you out of all devices.
-        </p>
+            회원님을 보호하기 위해 모든 기기에서 로그아웃 처리되었습니다.
+            </D>
 
         <div class="info-box info-box-alert">
             <p>
-                <strong th:text="#{email.compromise.time_label}">Time of detection:</strong>
+                <strong th:text="#{email.compromise.time_label}">감지 시간:</strong>
                 <span th:text="${compromise_time}">2025-10-01 23:30:00</span>
             </p>
         </div>
@@ -93,7 +121,7 @@
         <hr>
 
         <p class="info-text" th:text="#{email.compromise.warning}">
-            Your registered tasks are running normally. To continue using the service, please log in again to re-authenticate.
+            등록된 작업은 정상적으로 실행 중입니다. 서비스를 계속 사용하려면 다시 로그인하여 재인증하십시오.
         </p>
     </div>
 

@@ -2,93 +2,160 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{email.verification.title}">Taske Email Verification</title>
+    <title th:text="#{email.verification.title}">Taske 이메일 인증</title>
     <style>
+        /* minimal-white-style.css 기반 스타일 */
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #000;
+            background: #fff;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
         }
         .email-container {
             width: 100%;
-            max-width: 600px;
-            margin: 20px auto;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            overflow: hidden;
+            max-width: 500px; /* .auth-form과 유사한 너비 */
+            margin: 40px auto;
+            border: 2px solid #000; /* auth-form 테두리 */
+            padding: 50px;
+            box-sizing: border-box;
+            text-align: center;
         }
         .header {
-            background-color: #4A90E2;
-            color: #ffffff;
-            padding: 20px;
             text-align: center;
+            margin-bottom: 40px;
         }
         .header h1 {
+            font-size: 36px;
+            font-weight: 100;
+            letter-spacing: -1px;
             margin: 0;
-        }
-        .content {
-            padding: 30px 20px;
-            color: #333333;
-            line-height: 1.6;
-        }
-        .button-container {
-            text-align: center;
-            margin: 30px 0;
-        }
-        .button {
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
+            position: relative;
             display: inline-block;
         }
+        /* .logo::after 스타일 적용 */
+        .header h1::after {
+            content: '';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: #000;
+        }
+        .content {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .content p {
+            font-size: 16px;
+            font-weight: 300;
+            margin-bottom: 30px;
+        }
+        .button-container {
+            margin: 30px 0;
+        }
+
+        /* --- 1. 요청하신 Primary Button 스타일 (.submit-btn) --- */
         .button-primary {
-            background-color: #4A90E2;
-            color: #ffffff;
-            padding: 15px 25px;
+            display: inline-block;
+            text-decoration: none;
+            padding: 18px 60px;
+            background: #000;
+            color: #fff !important; /* !important로 텍스트 색상 보장 */
+            border: 2px solid #000;
+            font-size: 12px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            position: relative;
         }
+        .button-primary::before {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: -8px;
+            width: 30px;
+            height: 30px;
+            border-bottom: 2px solid #000;
+            border-left: 2px solid #000;
+        }
+        .button-primary:hover {
+            background: transparent;
+            color: #000 !important;
+            transform: translate(3px, 3px);
+        }
+
+        /* --- 2. 요청하신 Secondary Button 스타일 (본인이 아닙니다) --- */
         .button-secondary {
-            background-color: #dddddd;
-            color: #333333;
-            padding: 10px 20px;
+            display: inline-block;
+            text-decoration: none;
+            padding: 18px 60px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            position: relative;
+            border: 2px solid #000;
+
+            /* Default: White bg / Black text */
+            background: #fff;
+            color: #000 !important;
         }
+        .button-secondary::before {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: -8px;
+            width: 30px;
+            height: 30px;
+            border-bottom: 2px solid #000;
+            border-left: 2px solid #000;
+        }
+        /* Hover: Inverted (Black bg / White text) + Transform */
+        .button-secondary:hover {
+            background: #000;
+            color: #fff !important;
+            transform: translate(3px, 3px);
+        }
+
         .info-text {
-            font-size: 0.9em;
-            color: #777777;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 15px;
         }
         .link-text {
+            font-size: 12px;
             word-break: break-all;
         }
         .link-text a {
-            color: #4A90E2;
+            color: #000;
+            text-decoration: underline;
         }
+        /* .black-line 스타일 적용 */
         hr {
+            width: 100%;
+            height: 1px;
+            background: #000;
             border: 0;
-            border-top: 1px solid #eeeeee;
-            margin: 20px 0;
+            margin: 40px 0;
         }
         .cancel-section {
-            text-align: center;
-        }
-        .cancel-section .info-text {
-            margin-bottom: 20px;
-        }
-        .fine-print {
-            font-size: 0.8em;
-            color: #aaaaaa;
-            text-align: center;
-            margin-top: 20px;
+            margin-top: 30px;
         }
         .footer {
-            background-color: #f4f4f4;
-            color: #777777;
-            padding: 15px;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #000;
             text-align: center;
-            font-size: 0.8em;
-        }
-        .footer p {
-            margin: 0;
+            font-size: 12px;
+            letter-spacing: 1px;
+            font-weight: 500;
+            text-transform: uppercase;
         }
     </style>
 </head>
@@ -97,42 +164,40 @@
 <div class="email-container">
 
     <div class="header">
-        <h1 th:text="#{email.verification.greeting}">Welcome to Taske!</h1>
+        <h1 th:text="#{email.verification.greeting}">Taske에 오신 것을 환영합니다!</h1>
     </div>
 
     <div class="content">
         <p th:text="#{email.verification.message1}">
-            To complete your signup, please click the button below to verify your email address.
+            가입을 완료하려면 아래 버튼을 클릭하여 이메일 주소를 인증하세요.
         </p>
 
         <div class="button-container">
-            <a th:href="${verification_link}" class="button button-primary" th:text="#{email.verification.button}">
-                Verify Email Address
+            <!-- 'button-primary' 클래스 적용 -->
+            <a th:href="${verification_link}" class="button-primary" th:text="#{email.verification.button}">
+                이메일 주소 인증
             </a>
         </div>
 
         <p class="info-text" th:text="#{email.verification.message2}">
-            If the button doesn't work, please copy and paste the link below into your browser.
+            버튼이 작동하지 않으면 아래 링크를 복사하여 브라우저에 붙여넣으세요.
         </p>
         <p class="info-text link-text">
             <a th:href="${verification_link}" th:text="${verification_link}">Verification Link</a>
         </p>
+    </div>
 
-        <hr>
+    <hr>
 
-        <div class="cancel-section">
-            <p class="info-text" th:text="#{email.verification.warning}">
-                If you did not request this, please click the button below to cancel this signup attempt.
-            </p>
-
-            <a th:href="${cancel_link}" class="button button-secondary" th:text="#{email.verification.cancel_button}">
-                This wasn't me
-            </a>
-        </div>
-
-        <p class="fine-print" th:text="#{email.verification.expiration}">
-            This verification link is valid for 1 hour.
+    <div class="cancel-section">
+        <p class="info-text" th:text="#{email.verification.warning}">
+            이 요청을 하지 않으셨다면, 아래 버튼을 클릭하여 가입 시도를 취소하세요.
         </p>
+
+        <!-- 'button-secondary' 클래스 적용 -->
+        <a th:href="${cancel_link}" class="button-secondary" th:text="#{email.verification.cancel_button}">
+            제가 아닙니다
+        </a>
     </div>
 
     <div class="footer">
