@@ -2,7 +2,7 @@ spring:
   application:
     name: worker
   kafka:
-    bootstrap-servers: localhost:29092
+    bootstrap-servers: ${KAFKA_HOST}:${KAFKA_PORT}
     consumer:
       group-id: user-group
       key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
@@ -28,7 +28,7 @@ spring:
     client:
       channels:
         task-service:
-          address: static://localhost:9095
+          address: static://${TASK_HOST}:${GRPC_TASK_PORT}
           negotiation-type: plaintext
   mail:
     host: ${SMTP_HOST}
