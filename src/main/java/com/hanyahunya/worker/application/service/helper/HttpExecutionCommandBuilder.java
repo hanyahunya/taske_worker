@@ -57,6 +57,56 @@ public class HttpExecutionCommandBuilder {
                 // 스키마에 정의되지 않은 값은 무시
             }
         }
+        // 4b. [신규] param_schema를 순회하며 #_ (고정값) 및 %_ (환경변수) 처리
+        Map<String, Object> paramSchema = capabilityInfo.paramSchema();
+
+        if (paramSchema != null && paramSchema.containsKey("properties")) {
+            Map<String, Object> properties = (Map<String, Object>) paramSchema.get("properties");
+
+            for (Map.Entry<String, Object> entry : properties.entrySet()) {
+                String schemaKey = entry.getKey(); // 예: "#_pageNo", "%_authKey"
+                Map<String, Object> propDetails = (Map<String, Object>) entry.getValue();
+
+                String finalKey;
+                Object finalValue;
+
+                if (schemaKey.startsWith("#_")) {
+                    // 고정값: #_key -> key, value는 schema의 "value"
+                    finalKey = schemaKey.substring(2); // 예: "pageNo"
+                    finalValue = propDetails.get("value"); // 예: "1"
+
+                } else if (schemaKey.startsWith("%_")) {
+                    // 환경변수: %_key -> key, value는 schema의 "value"에 %_를 붙임
+                    finalKey = schemaKey.substring(2); // 예: "authKey"
+                    Object schemaValue = propDetails.get("value"); // 예: "apihub.kma.go.kr.secret"
+                    // 예: "%_apihub.kma.go.kr.secret"
+                    finalValue = (schemaValue != null) ? "%_" + schemaValue.toString() : null;
+
+                } else {
+                    // 일반 변수 (interpolatedConfig에서 이미 처리됨)
+                    continue;
+                }
+
+                // 값이 null이 아닌 경우, *원본 스키마 키*를 기준으로 분배
+                // (예: querySchema에 "#_pageNo"가 있는지 확인)
+                // (      -> queryParams 에는 "pageNo": "1" 로 저장)
+                if (finalValue != null) {
+
+                    boolean inQuery = querySchema.contains(schemaKey);
+                    boolean inBody = bodySchema.contains(schemaKey);
+                    boolean inHeader = headerSchema.contains(schemaKey);
+
+                    if (inQuery) {
+                        queryParams.put(finalKey, finalValue);
+                    } else if (inBody) {
+                        body.put(finalKey, finalValue);
+                    } else if (inHeader) {
+                        headers.put(finalKey, String.valueOf(finalValue));
+                    }
+                }
+            }
+        }
+
 
         // 5. 최종 레코드 생성
         return new HttpExecutionCommand(url, method, queryParams, body, headers, outputSchema, authType, topic);
