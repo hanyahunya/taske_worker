@@ -28,6 +28,7 @@ public record TaskDetailsResponse(
             String capabilityId,
             String executionType,
             Map<String, Object> executionSpec,
+            Map<String, Object> paramSchema,
             Map<String, Object> outputSchema,
             ModuleDetail moduleInfo
     ) {}
@@ -82,6 +83,7 @@ public record TaskDetailsResponse(
                 capabilityInfo.getCapabilityId(),
                 capabilityInfo.getExecutionType(),
                 toMap(capabilityInfo.getExecutionSpec()), // Struct -> Map
+                toMap(capabilityInfo.getParamSchema()),
                 toMap(capabilityInfo.getOutputSchema()),  // Struct -> Map
                 convertToModuleDetail(capabilityInfo.getModuleInfo())
         );
